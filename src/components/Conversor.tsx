@@ -8,25 +8,43 @@ export default function Conversor() {
   const [dollarValue, setDollarValue] = useState<string>('')
   const [euroValue, setEuroValue] = useState<string>('')
 
-  //   const [realValue, setRealValue] = useState<string>('')
+  const [realValue, setRealValue] = useState<string>('')
 
   const now = new Date()
 
-  async function getCoinValue(coin: string) {
+  async function setValues(coin: string) {
+    if (coin === 'BRL') {
+      await valuesApi.get(`/${coin}-USD`).then((res) => {
+        setDollarValue(res.data.BRLUSD.high)
+      })
+      await valuesApi.get(`/${coin}-EUR`).then((res) => {
+        setEuroValue(res.data.BRLEUR.high)
+      })
+    }
+    if (coin === 'USD') {
+      await valuesApi.get(`/${coin}-EUR`).then((res) => {
+        setEuroValue(res.data.USDEUR.high)
+      })
+      await valuesApi.get(`/${coin}-BRL`).then((res) => {
+        setRealValue(res.data.USDBRL.high)
+      })
+    }
+
+    if (coin === 'EUR') {
+      await valuesApi.get(`/${coin}-USD`).then((res) => {
+        setDollarValue(res.data.EURUSD.high)
+      })
+      await valuesApi.get(`/${coin}-BRL`).then((res) => {
+        setRealValue(res.data.EURBRL.high)
+      })
+    }
+  }
+
+  function getCoinValue(coin: string) {
     if (coin === 'undefined') {
       console.log('erro')
     } else {
-      if (coin === 'BRL') {
-        await valuesApi.get(`/${coin}-USD`).then((res) => {
-          setDollarValue(res.data.BRLUSD.high)
-        })
-        await valuesApi.get(`/${coin}-EUR`).then((res) => {
-          setEuroValue(res.data.BRLEUR.high)
-        })
-      }
-      if (coin === 'BRL') {
-        
-      }
+      setValues(coin)
     }
   }
 
@@ -66,6 +84,8 @@ export default function Conversor() {
 
         <h5>Real</h5>
         <p>Inserir real:</p>
+
+        <p>Real {realValue}</p>
 
         <p>Dolar {dollarValue}</p>
         <p>Euro {euroValue}</p>
