@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react'
 import { Form } from 'react-bootstrap'
 import { valuesApi } from '../api/routes'
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Conversor() {
   const [selectedCoin, setSelectedCoin] = useState<string>()
@@ -46,6 +47,10 @@ export default function Conversor() {
   }
 
   function renderResult(coin: string) {
+    //@ts-ignore
+    document.querySelector('.data-container').style.display = 'block'
+    //@ts-ignore
+    document.querySelector('.footer').style.display = 'block'
     if (coin === 'EUR') {
       //@ts-ignore
       document.querySelector('.real').style.display = 'block'
@@ -82,7 +87,15 @@ export default function Conversor() {
 
   function getCoinValue(coin: string) {
     if (coin === 'undefined' || !typedValue) {
-      console.log('erro')
+      toast.error('Ocorreu um erro, revise os dados!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     } else {
       setValues(coin)
       renderResult(coin)
@@ -91,11 +104,23 @@ export default function Conversor() {
 
   return (
     <>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <ToastContainer />
       <div className='conversor-container'>
         <p>Informe o valor e a moeda para conversão</p>
         <hr />
 
-        <Form.Group controlId='formBasicSelect' className='bootstrap-field'>
+        <Form.Group controlId='formBasicSelect' className='form-container'>
           <h5>Valor</h5>
           <Form.Control
             type='number'
@@ -117,28 +142,33 @@ export default function Conversor() {
 
         <button onClick={() => getCoinValue(String(selectedCoin))}>Converter</button>
 
-        <p>Resultado da Conversão - Cotação do dia</p>
-        <hr />
-
-        <h5>Data da consulta</h5>
-        <p>Inserir data </p>
-
-        <div className='dollar'>
-          <h5>Dolar</h5>
-          <p>{dollarValue}</p>
-        </div>
-        <div className='euro'>
-          <h5>Euro</h5>
-          <p>{euroValue}</p>
+        <div className='data-container'>
+          <p>Resultado da Conversão - Cotação do dia</p>
+          <hr />
+          <h5>Data da consulta</h5>
+          <p className='data'>Inserir data </p>
         </div>
 
-        <div className='real'>
-          <h5>Real</h5>
-          <p>{realValue}</p>
+        <div className='results-container'>
+          <div className='dollar'>
+            <h5>Dolar</h5>
+            <p>{dollarValue}</p>
+          </div>
+          <div className='euro'>
+            <h5>Euro</h5>
+            <p>{euroValue}</p>
+          </div>
+
+          <div className='real'>
+            <h5>Real</h5>
+            <p>{realValue}</p>
+          </div>
         </div>
 
-        <hr />
-        <p>{now.getFullYear()} - BuscadorCEP! </p>
+        <div className='footer'>
+          <hr />
+          <p>{now.getFullYear()} - ConversorMoeda! </p>
+        </div>
       </div>
     </>
   )
