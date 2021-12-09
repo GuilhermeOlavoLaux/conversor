@@ -2,4 +2,16 @@
   margin-top: 40px;
   margin-left: 40px;
   width: 800px;
+}
+
+.euro {
+  display: none;
+}
+
+.real {
+  display: none;
+}
+
+.dollar {
+  display: none;
 }/*# sourceMappingURL=index.css.map */
