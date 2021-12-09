@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 import { Form } from 'react-bootstrap'
 import { valuesApi } from '../api/routes'
-import { ToastContainer, toast } from 'react-toastify';
 
 export default function Conversor() {
   const [selectedCoin, setSelectedCoin] = useState<string>()
@@ -10,7 +10,7 @@ export default function Conversor() {
   const [euroValue, setEuroValue] = useState<string>('')
   const [realValue, setRealValue] = useState<string>('')
 
-  const now = new Date()
+  const date = new Date()
 
   async function setValues(coin: string) {
     if (coin === 'BRL') {
@@ -88,14 +88,14 @@ export default function Conversor() {
   function getCoinValue(coin: string) {
     if (coin === 'undefined' || !typedValue) {
       toast.error('Ocorreu um erro, revise os dados!', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
-        });
+        progress: undefined
+      })
     } else {
       setValues(coin)
       renderResult(coin)
@@ -146,7 +146,7 @@ export default function Conversor() {
           <p>Resultado da Conversão - Cotação do dia</p>
           <hr />
           <h5>Data da consulta</h5>
-          <p className='data'>Inserir data </p>
+          <p className='data'>{`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</p>
         </div>
 
         <div className='results-container'>
@@ -167,7 +167,7 @@ export default function Conversor() {
 
         <div className='footer'>
           <hr />
-          <p>{now.getFullYear()} - ConversorMoeda! </p>
+          <p>{date.getFullYear()} - ConversorMoeda! </p>
         </div>
       </div>
     </>
